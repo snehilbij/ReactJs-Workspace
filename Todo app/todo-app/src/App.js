@@ -2,8 +2,6 @@ import React, {Component} from 'react';
 import FirstComponent from './components/learing-examples/FirstComponent';
 import SecondComponent from './components/learing-examples/SecondComponent';
 import ThirdComponent from './components/learing-examples/ThirdComponent';
-import Counter from './components/counter/Counter';
-import logo from './logo.svg';
 import TodoApp from './components/todo/TodoApp'
 import './App.css';
 import './bootstrap.css';
