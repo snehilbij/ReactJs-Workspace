@@ -12,7 +12,7 @@ class HeaderComponent extends Component{
                     <div><a className="navbar-brand" href="">MyFirstApp</a></div>
                     <ul className="navbar-nav">
                         {isUserLoggedin && <li><Link className="nav-link" to="/welcome/:name">Home</Link></li>}
-                        {isUserLoggedin && <li><Link className="nav-link" to="/todos">Welcome</Link></li>}
+                        {isUserLoggedin && <li><Link className="nav-link" to="/todos">Todo</Link></li>}
                     </ul>
                     <ul className="navbar-nav navbar-collapse justify-content-end">
                         {!isUserLoggedin && <li><Link className="nav-link" to="/login">LogIn</Link></li>}

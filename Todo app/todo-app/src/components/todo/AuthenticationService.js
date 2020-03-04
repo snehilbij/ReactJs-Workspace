@@ -1,3 +1,5 @@
+
+
 class AuthenticationService{
     registerSuccessfulLogin(username, password){
         console.log('Successful Login');
@@ -13,6 +15,12 @@ class AuthenticationService{
         if(user===null) return false
         else return true
     }
+
+    getLoggedinUser(){
+        let user = sessionStorage.getItem('AuthenticatedUser');
+        if(user===null) return ''
+        else return user
+    }
 }
 
-export default new AuthenticationService
+export default new AuthenticationService()
