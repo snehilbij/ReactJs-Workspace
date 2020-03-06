@@ -30,7 +30,7 @@ public class TodoResource {
 		if(todo!=null) {
 			return ResponseEntity.noContent().build();
 		}
-		return ResponseEntity.notFound().build();
+	return ResponseEntity.notFound().build();
 	}
 
 }
