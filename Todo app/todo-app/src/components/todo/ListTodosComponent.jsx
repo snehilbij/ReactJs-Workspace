@@ -1,20 +1,21 @@
 import React, { Component } from "react"
 import TodoDataService from '../../api/todo/TodoDataService.js'
 import AuthenticationService from './AuthenticationService.js'
+import moment from 'moment'
 
 
 class ListTodosComponent extends Component{
     constructor(props){
         super(props)
             this.state = {
-                todos : 
-                [
-                   // {id: 1, description: 'Learn React', isCompleted: false, targetDate : new Date()},
-                   // {id: 2, description: 'Learn Spring Boot', isCompleted: false, targetDate : new Date()},
-                   // {id: 3, description: 'Practice React and Spring Boot', isCompleted: false, targetDate : new Date()},
-                   // {id: 4, description: 'Learn theory', isCompleted: false, targetDate : new Date()}
-                ]
+                todos : [],
+                message : null
             }
+            this.deleteTodoClicked = this.deleteTodoClicked.bind(this)
+            this.updateTodoClicked = this.updateTodoClicked.bind(this)
+            this.createTodoClicked = this.createTodoClicked.bind(this)
+            this.refreshTodos = this.refreshTodos.bind(this)
+            
         }
     shouldComponentUpdate(nextProps, nextState){
             //console.log(nextProps)
@@ -23,6 +24,10 @@ class ListTodosComponent extends Component{
     }
         
     componentDidMount(){
+        this.refreshTodos()
+    }   
+    
+    refreshTodos(){
         let username = AuthenticationService.getLoggedinUser()
         TodoDataService.retrieveAllTodos(username)
         .then(
@@ -33,13 +38,32 @@ class ListTodosComponent extends Component{
                 })
             }
         )
+    }
+    
+    deleteTodoClicked(id){
+        let username = AuthenticationService.getLoggedinUser()
+        console.log(username, id)
+        TodoDataService.deleteTodo(username, id)
+        .then(
+            Response => {this.setState({message : `Delete of state ${id} successful!`})
+            this.refreshTodos()
+            }
+        )
+    }
 
-    }        
+    updateTodoClicked(id){
+        this.props.history.push(`/todos/${id}`)       
+    }
+
+    createTodoClicked(){
+        this.props.history.push(`/todos/-1`) 
+    }
 
     render(){
         return(
             <div>
                 <h1>Todo's List</h1>
+                {this.state.message && <div className="alert alert-success">{this.state.message}</div>}
                 <div className="container">
                     <table className="table">
                         <thead>
@@ -48,6 +72,8 @@ class ListTodosComponent extends Component{
                                 <th>Description</th>
                                 <th>Is Completed</th>
                                 <th>Target Date</th>
+                                <th>Update</th>
+                                <th>Delete</th>
                             </tr>                        
                         </thead>
                         <tbody>
@@ -58,12 +84,17 @@ class ListTodosComponent extends Component{
                                         <td>{todo.id}</td>
                                         <td>{todo.description}</td>
                                         <td>{todo.done}</td>
-                                        <td>{todo.targetDate}</td>
+                                        <td>{moment(todo.targetDate).format("MMM Do, YYYY")}</td>
+                                        <td><button className="btn btn-success" onClick={() => this.updateTodoClicked(todo.id)}>Update</button></td>
+                                        <td><button className="btn btn-warning" onClick={() => this.deleteTodoClicked(todo.id)}>Delete</button></td>
                                     </tr>
                                 )    
                             }                    
                         </tbody>
                     </table>
+                    <div className="row">
+                        <button className="btn btn-success" onClick={this.createTodoClicked}>Add Todo</button>            
+                    </div>
                 </div>
             </div>
         )
