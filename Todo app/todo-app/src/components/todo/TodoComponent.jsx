@@ -10,11 +10,30 @@ class TodoComponent extends Component{
         this.state = {
             id : this.props.match.params.id,
             description : '',
-            targetDate : moment(new Date()).format('YYYY-MM-DD')
+            targetDate : moment(new Date()).format('YYYY-MM-DD'),
+            iscompleted : [],
+            selectedValue : '',
         }
 
         this.onSubmit = this.onSubmit.bind(this)
         this.validate = this.validate.bind(this)
+        this.getIsCompletedItems = this.getIsCompletedItems.bind(this)
+        this.handleDropdownChange = this.handleDropdownChange.bind(this)
+    }
+
+    handleDropdownChange(e){
+        console.log(e.target.value)
+        this.setState({
+            selectedValue : e.target.value
+        })        
+    }
+
+    getIsCompletedItems(){
+        let username = AuthenticationService.getLoggedinUser()
+        TodoDataService.retrieveAllIsCompletedItems(username)
+        .then(response => this.setState({
+            iscompleted : response.data
+        }))
     }
 
     componentDidMount(){
@@ -82,6 +101,17 @@ class TodoComponent extends Component{
                                 <fieldset className="form-group">
                                 <label>Description</label>
                                 <Field className="form-control" type="text" name="description"></Field>
+                                </fieldset>
+
+                                <fieldset>
+                                    <label>Is Completed</label>
+                                    <select className="form-control" name="iscompleted" onClick={this.getIsCompletedItems} 
+                                    onChange={this.handleDropdownChange}>
+                                        {this.state.iscompleted.map(
+                                            iscompleted =>
+                                            <option value={iscompleted.id}>{iscompleted.name}</option>
+                                        )}                                       
+                                    </select>
                                 </fieldset>
                                 
                                 <fieldset className="form-group">

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.todo.rest.webservices.restfulwebservice.todo.Todo;
+import com.todo.rest.webservices.restfulwebservice.todo.IsCompleted;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -24,10 +25,17 @@ public class TodoResource {
 	
 	@Autowired
 	private TodoHardcodedService todoService;
+	@Autowired
+	private IsCompletedService iscompletedService;
 	
 	@GetMapping("/users/{username}/todos")
 	public List<Todo> getAllTodos(@PathVariable String username){
 		return todoService.findAll();		
+	}
+	
+	@GetMapping("/users/{username}/iscompleted")
+	public List<IsCompleted> getIsCompletedItems(){
+		return iscompletedService.findAll();
 	}
 	
 	@GetMapping("/users/{username}/todo/{id}")

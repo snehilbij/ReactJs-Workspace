@@ -7,6 +7,10 @@ class TodoDataService {
         return axios.get(`http://localhost:8080/users/${name}/todos`);
     }
 
+    retrieveAllIsCompletedItems(name){
+        return axios.get(`http://localhost:8080/users/${name}/iscompleted`);
+    }
+
     retrieveTodo(name, id){
         //console.log('execute service')
         return axios.get(`http://localhost:8080/users/${name}/todo/${id}`);
